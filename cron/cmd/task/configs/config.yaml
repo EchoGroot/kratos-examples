@@ -1,0 +1,3 @@
+app:
+  backupDbACron: "0/2 * * * * ? "
+  backupDbBCron: "1/2 * * * * ? "

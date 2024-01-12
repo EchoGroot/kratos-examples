@@ -1,0 +1,73 @@
+run: 
+  timeout: 5m
+  modules-download-mode: readonly
+linters:
+  disable-all: true
+  fast: false
+  enable:
+    - bodyclose
+    - deadcode
+    - dogsled
+    - durationcheck
+    - errcheck
+    - exportloopref
+    - govet
+    - gosimple
+    - gofmt
+    - gofumpt
+    - goconst
+    - goimports
+    - gomnd
+    - gocyclo
+    - ineffassign
+    - lll
+    - prealloc
+    - revive
+    - staticcheck
+    - structcheck
+    - typecheck
+    - unused
+    - varcheck
+    - whitespace
+    - wastedassign
+    - unconvert
+  # don't enable:
+  # - asciicheck
+  # - scopelint
+  # - gochecknoglobals
+  # - gocognit
+  # - godot
+  # - godox
+  # - goerr113
+  # - interfacer
+  # - maligned
+  # - nestif
+  # - prealloc
+  # - testpackage
+  # - stylrcheck
+  # - wsl
+linters-settings:
+  #  govet:
+  #    处理err时，要多写很多代码来声明变量
+  #    check-shadowing: true
+  #  whitespace:
+  #    和gofumpt冲突
+  #    multi-func: true
+  lll:
+    line-length: 160
+  revive:
+    rules:
+      - name: var-naming
+        severity: warning
+        disabled: true
+  gomnd:
+    # don't include the "operation", "argument" and "assign"
+    checks:
+      - case
+      - condition
+      - return
+  goconst:
+    ignore-tests: true
+  gocyclo:
+    # recommend 10-20
+    min-complexity: 50
