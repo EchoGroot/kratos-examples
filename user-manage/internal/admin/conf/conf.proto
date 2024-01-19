@@ -1,0 +1,62 @@
+syntax = "proto3";
+package internal.admin.conf;
+
+option go_package = "github.com/EchoGroot/kratos-demo/user-manage/internal/admin/conf;conf";
+
+import "google/protobuf/duration.proto";
+import "validate/validate.proto";
+
+
+// 通过Protobuf定义，可以同时支持多种格式如json、xml或者yaml等多种配置格式统一解析
+message Bootstrap {
+  // 业务相关的配置
+  App app = 1;
+  // 本服务的服务配置
+  Server server = 2 [(validate.rules).message.required = true];
+  // 数据层连接相关配置，包括pg，es，redis，kafka，prometheus
+  Data data = 3 [(validate.rules).message.required = true];
+  // 微服务客户端配置，rpc或http服务客户端
+  Service service = 4;
+}
+
+// message名格式：大驼峰
+message App {
+}
+
+message Server {
+  message HTTP {
+    string network = 1;
+    string addr = 2 [(validate.rules).string.min_len = 1];
+    google.protobuf.Duration timeout = 3 [(validate.rules).duration.required = true];
+  }
+  message GRPC {
+    string network = 1;
+    string addr = 2 [(validate.rules).string.min_len = 1];
+    google.protobuf.Duration timeout = 3 [(validate.rules).duration.required = true];
+  }
+
+  HTTP http = 1 [(validate.rules).message.required = true];
+  GRPC grpc = 2 [(validate.rules).message.required = true];
+}
+
+message Service {
+}
+
+message Data {
+  message Postgres {
+    message Pool {
+      int32     max_idle_conns = 1 [(validate.rules).int32.gt = 0];
+      int32     max_open_conns = 2 [(validate.rules).int32.gt = 0];
+      google.protobuf.Duration conn_max_lifetime = 3 [(validate.rules).duration.required = true];
+    }
+    message Init {
+      google.protobuf.Duration timeout = 1 [(validate.rules).duration.required = true];
+    }
+
+    string dsn = 1 [(validate.rules).string.min_len = 1];
+    Pool pool = 2 [(validate.rules).message.required = true];
+    Init init = 3 [(validate.rules).message.required = true];
+  }
+  Postgres postgres = 1 [(validate.rules).message.required = true];
+}
+

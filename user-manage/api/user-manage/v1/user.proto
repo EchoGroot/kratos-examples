@@ -1,0 +1,106 @@
+syntax = "proto3";
+
+package usermanage.admin.v1;
+
+import "google/api/annotations.proto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/empty.proto";
+import "validate/validate.proto";
+import "api/user-manage/v1/page.proto";
+
+
+option go_package = "github.com/echogroot/crud/admin/v1;adminv1";
+
+
+service UserService {
+  rpc ListUsers(ListUsersRequest) returns (ListUsersResponse) {
+    option (google.api.http) = {
+      get: "/v1/users"
+    };
+  }
+
+  rpc CreateUser(CreateUserRequest) returns (User) {
+    option (google.api.http) = {
+      post: "/v1/users"
+      body: "*"
+    };
+  }
+
+  rpc GetUser(GetUserRequest) returns (User) {
+    option (google.api.http) = {
+      get: "/v1/users/{id}"
+    };
+  }
+
+  rpc UpdateUser(UpdateUserRequest) returns (User) {
+    option (google.api.http) = {
+      put: "/v1/users/{user.id}",
+      body: "*"
+      additional_bindings {
+        patch: "/v1/users/{user.id}"
+        body: "*"
+      }
+    };
+  }
+
+  rpc DeleteUser(DeleteUserRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      delete: "/v1/users/{id}",
+    };
+  }
+}
+
+// 用户状态
+enum UserStatus{
+  UNKNOWN_STATUS = 0;
+  // 正常
+  NORMAL = 1;
+  // 禁用
+  DISABLED = 2;
+  // 锁定，连续登录失败次数超过限制
+  LOCKED = 3;
+}
+
+message ListUsersRequest {
+  string username_prefix = 1;
+  string nick_name_prefix = 2;
+  string email_prefix = 5;
+  UserStatus status = 3;
+  PageRequest page = 4 [(validate.rules).message = {required: true}];
+}
+
+message CreateUserRequest {
+  User user = 1 [(validate.rules).message = {required: true}];
+}
+
+message User {
+  string id = 1;
+  string username = 2 [(validate.rules).string.min_len = 1];
+  string nick_name = 3 [(validate.rules).string.min_len = 1];
+  string password = 4;
+  UserStatus status = 5;
+  string tel = 6;
+  string email = 7;
+  google.protobuf.Timestamp create_time = 13;
+  google.protobuf.Timestamp update_time = 14;
+}
+
+message ListUsersResponse {
+  repeated User users = 1;
+  PageResponse page = 2;
+}
+
+message GetUserRequest {
+  string id = 1 [(validate.rules).string.min_len = 1];
+}
+
+message UpdateUserRequest {
+  User user = 1 [(validate.rules).message = {required: true, skip: true}];
+  google.protobuf.FieldMask update_mask = 3;
+}
+
+message DeleteUserRequest {
+  string id = 1  [(validate.rules).string.min_len = 1];
+}
+

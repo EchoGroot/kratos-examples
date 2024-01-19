@@ -1,0 +1,3 @@
+
+### 存活探针
+GET {{adminBaseUrl}}/livez

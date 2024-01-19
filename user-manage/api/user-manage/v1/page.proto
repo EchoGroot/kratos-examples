@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package usermanage.admin.v1;
+
+import "validate/validate.proto";
+
+option go_package = "github.com/echogroot/crud/admin/v1;adminv1";
+
+//参考Google API Design Guide
+
+message PageRequest {
+  //page_no与page_token二选一
+  int32 page_no = 1 [(validate.rules).int32.gt = 0];
+  string page_token = 2;
+  //页面大小
+  int32 page_size = 3 [(validate.rules).int32.gt = 0];
+  //排序，符合SQL语法
+  string order_by = 4;
+}
+
+message PageResponse {
+  int32 total_size = 1;
+  string next_page_token = 2;
+}

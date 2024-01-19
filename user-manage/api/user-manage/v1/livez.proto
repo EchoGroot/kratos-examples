@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package usermanage.admin.v1;
+
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+
+
+option go_package = "github.com/echogroot/crud/admin/v1;adminv1";
+
+
+service LivezService {
+  rpc Livez(google.protobuf.Empty) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      get: "/livez"
+    };
+  }
+
+}
+
+message LivezRequest {}
+
+message LivezResponse {}

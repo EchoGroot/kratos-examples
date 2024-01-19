@@ -1,0 +1,14 @@
+### 创建用户
+POST {{adminBaseUrl}}/v1/users HTTP/1.1
+Content-Type: application/json
+
+{
+  "user": {
+    "username": "zhangsan-1",
+    "nickName": "张三-1",
+    "password": "123456",
+    "status": 1,
+    "tel": "777",
+    "email": "777@email"
+  }
+}
