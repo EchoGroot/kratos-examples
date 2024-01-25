@@ -2,7 +2,7 @@ package bootstrap
 
 import (
 	"github.com/EchoGroot/kratos-examples/pkg/bytedance/util/logger/kratoslog"
-	"github.com/EchoGroot/kratos-examples/pkg/kratos/contrib/log/logrus"
+	"github.com/EchoGroot/kratos-examples/pkg/kratosx/contrib/log/logrus"
 	bytedancelog "github.com/bytedance/gopkg/util/logger"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/middleware/tracing"

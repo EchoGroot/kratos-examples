@@ -2,7 +2,6 @@ package postgres
 
 import (
 	"fmt"
-	"github.com/EchoGroot/kratos-examples/pkg/gormx"
 	"log"
 	"os"
 	"time"
@@ -13,11 +12,6 @@ import (
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
-
-type Config struct {
-	Postgres postgres.Config
-	Pool     *gormx.PoolConfig
-}
 
 type Option func(*options)
 

@@ -2,6 +2,7 @@ package server
 
 import (
 	"context"
+	"github.com/EchoGroot/kratos-examples/pkg/kratosx"
 
 	adminv1 "github.com/EchoGroot/kratos-examples/user-manage/api/user-manage/v1"
 	"github.com/EchoGroot/kratos-examples/user-manage/internal/admin/conf"
@@ -9,8 +10,6 @@ import (
 
 	"github.com/go-kratos/kratos/v2/middleware/logging"
 
-	kittracing "github.com/EchoGroot/kratos-examples/pkg/kratos/middleware/tracing"
-	kithttp "github.com/EchoGroot/kratos-examples/pkg/kratos/transport/http"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/middleware/recovery"
 	"github.com/go-kratos/kratos/v2/middleware/selector"
@@ -30,14 +29,14 @@ func NewHTTPServer(
 		http.Middleware(
 			recovery.Recovery(),
 			tracing.Server(),
-			kittracing.WriteTraceId2ReplyHeader,
+			kratosx.WriteTraceId2ReplyHeader,
 			selector.
 				Server(logging.Server(logger)).
 				Match(NewWhiteListMatcher()).
 				Build(),
 			validate.Validator(),
 		),
-		http.ErrorEncoder(kithttp.ErrorEncoder),
+		http.ErrorEncoder(kratosx.ErrorEncoder),
 	}
 	if c.Server.Http.Network != "" {
 		opts = append(opts, http.Network(c.Server.Http.Network))
