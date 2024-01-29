@@ -2,7 +2,6 @@ package main
 
 import (
 	"flag"
-	"fmt"
 	"os"
 
 	"github.com/EchoGroot/kratos-examples/pkg/kratosx"
@@ -12,7 +11,6 @@ import (
 	"github.com/go-kratos/kratos/v2/transport/grpc"
 
 	"github.com/go-kratos/kratos/v2"
-	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/transport/http"
 )
 
@@ -36,7 +34,7 @@ func main() {
 	// 加载日志
 	kratosLog, err := kratosx.NewLoggerProvider(&ServiceInfo, Flags.LogLevel)
 	if err != nil {
-		kratosx.LogrusPanicf("load logger error: %+v", err)
+		kratosx.LogFatalf("load logger error: %+v", err)
 	}
 
 	// 配置序列化
@@ -46,31 +44,31 @@ func main() {
 	if err = kratosx.NewTracerProvider(); err != nil {
 		// 底层调用panic（kit库里修改的）。不要使用log.Fatal()，内部调用os.Exit()，造成无法执行defer
 		// 不要在 main 函数外退出程序，会造成逻辑割裂，和error一个道理。
-		log.Log(log.LevelFatal, log.DefaultMessageKey, fmt.Sprintf("create global tracer error: %+v", err))
+		kratosx.LogFatalf("create global tracer error: %+v", err)
 		// log.Fatal("xxx")
 	}
 
 	// 加载配置文件
 	var bc conf.Bootstrap
 	if err = kratosx.NewConfigProvider(Flags.Conf, &bc); err != nil {
-		log.Log(log.LevelFatal, log.DefaultMessageKey, fmt.Sprintf("load config file error: %+v", err))
+		kratosx.LogFatalf("load config file error: %+v", err)
 	}
 
 	// 初始化数据库
 	if err := postgres.InitDb(bc.Data.Postgres.Dsn, bc.Data.Postgres.Init.Timeout.AsDuration()); err != nil {
-		log.Log(log.LevelFatal, log.DefaultMessageKey, fmt.Sprintf("init postgres error: %+v", err))
+		kratosx.LogFatalf("init postgres error: %+v", err)
 	}
 
 	// 依赖注入
 	app, cleanup, err := wireApp(&bc, kratosLog.Logger)
 	if err != nil {
-		log.Log(log.LevelFatal, log.DefaultMessageKey, fmt.Sprintf("wire app error: %+v", err))
+		kratosx.LogFatalf("wire app error: %+v", err)
 	}
 	defer cleanup()
 
 	// 启动项目
 	if err := app.Run(); err != nil {
-		log.Log(log.LevelFatal, log.DefaultMessageKey, fmt.Sprintf("run app error: %+v", err))
+		kratosx.LogFatalf("run app error: %+v", err)
 	}
 }
 

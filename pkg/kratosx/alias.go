@@ -5,6 +5,7 @@ import (
 	"github.com/EchoGroot/kratos-examples/pkg/kratosx/client"
 	"github.com/EchoGroot/kratos-examples/pkg/kratosx/contrib/log/logrus"
 	"github.com/EchoGroot/kratos-examples/pkg/kratosx/encoding/json"
+	"github.com/EchoGroot/kratos-examples/pkg/kratosx/log"
 	"github.com/EchoGroot/kratos-examples/pkg/kratosx/middleware/tracing"
 	"github.com/EchoGroot/kratos-examples/pkg/kratosx/transport/http"
 )
@@ -25,11 +26,11 @@ var (
 	NewTracerProvider           = bootstrap.NewTracerProvider
 	NewKeyAuthPerRPCCredentials = client.NewKeyAuthPerRPCCredentials
 	NewLogrusLogger             = logrus.NewLogrusLogger
-	LogrusPanic                 = logrus.Panic
-	LogrusPanicf                = logrus.Panicf
-	LogrusPanicln               = logrus.Panicln
 	ConfigMarshal               = json.ConfigMarshal
 	WriteTraceId2ReplyHeader    = tracing.WriteTraceId2ReplyHeader
 	ErrorEncoder                = http.ErrorEncoder
 	NilFilterResponseEncoder    = http.NilFilterResponseEncoder
+	LogFatal                    = log.LogFatal
+	LogFatalf                   = log.LogFatalf
+	LogFatalw                   = log.LogFatalw
 )

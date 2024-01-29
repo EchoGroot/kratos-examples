@@ -2,7 +2,6 @@ package main
 
 import (
 	"flag"
-	"fmt"
 	"os"
 
 	"github.com/EchoGroot/kratos-examples/pkg/kratosx"
@@ -11,7 +10,6 @@ import (
 	"github.com/EchoGroot/kratos-examples/backup-db/internal/task/server"
 
 	"github.com/go-kratos/kratos/v2"
-	"github.com/go-kratos/kratos/v2/log"
 )
 
 var (
@@ -34,25 +32,25 @@ func main() {
 	// 加载日志
 	kratosLogger, err := kratosx.NewLoggerProvider(&ServiceInfo, Flags.LogLevel)
 	if err != nil {
-		kratosx.LogrusPanicf("load logger error: %+v", err)
+		kratosx.LogFatalf("load logger error: %+v", err)
 	}
 
 	// 加载配置文件
 	var bc conf.Bootstrap
 	if err = kratosx.NewConfigProvider(Flags.Conf, &bc); err != nil {
-		log.Log(log.LevelFatal, log.DefaultMessageKey, fmt.Sprintf("load config file error: %+v", err))
+		kratosx.LogFatalf("load config file error: %+v", err)
 	}
 
 	// 依赖注入
 	app, cleanup, err := wireApp(&bc, kratosLogger.Logger)
 	if err != nil {
-		log.Log(log.LevelFatal, log.DefaultMessageKey, fmt.Sprintf("wire app error: %+v", err))
+		kratosx.LogFatalf("wire app error: %+v", err)
 	}
 	defer cleanup()
 
 	// 启动项目
 	if err := app.Run(); err != nil {
-		log.Log(log.LevelFatal, log.DefaultMessageKey, fmt.Sprintf("run app error: %+v", err))
+		kratosx.LogFatalf("run app error: %+v", err)
 	}
 }
 
