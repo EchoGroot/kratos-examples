@@ -10,7 +10,7 @@ import (
 // StructToMapByFieldMask 根据fieldMask，struct转map
 // 注意fieldMask里的field名称是蛇形（前端传的字段是小驼峰，pb定义的字段为蛇形，最终接收到的是蛇形），
 // 而struct的字段是大驼峰，所以这里做了转换
-// 已经wrap过了，切勿重复wrap
+// 已经wrap过error了，请勿重复wrap
 func StructToMapByFieldMask(fieldMask *fieldmaskpb.FieldMask, src interface{}) (map[string]interface{}, error) {
 	field := make(map[string]interface{})
 	mask, err := fieldMaskUtils.MaskFromProtoFieldMask(fieldMask, stringx.Snake2BigCamel)
