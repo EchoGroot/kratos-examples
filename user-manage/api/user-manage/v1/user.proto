@@ -63,10 +63,9 @@ enum UserStatus{
 }
 
 message ListUsersRequest {
-  string username_prefix = 1;
-  string nick_name_prefix = 2;
-  string email_prefix = 5;
-  UserStatus status = 3;
+  string nick_name = 1;
+  UserStatus status = 3 [(validate.rules).enum = {defined_only : true,not_in: [0]}];
+  google.protobuf.FieldMask select_mask = 2;
   PageRequest page = 4 [(validate.rules).message = {required: true}];
 }
 
@@ -79,7 +78,7 @@ message User {
   string username = 2 [(validate.rules).string.min_len = 1];
   string nick_name = 3 [(validate.rules).string.min_len = 1];
   string password = 4;
-  UserStatus status = 5;
+  UserStatus status = 5 [(validate.rules).enum = {defined_only : true,not_in: [0]}];
   string tel = 6;
   string email = 7;
   google.protobuf.Timestamp create_time = 13;

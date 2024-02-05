@@ -14,7 +14,7 @@
 
 ## 启动项目
 
-1. 创建依赖的数据库容器，`docker compose up -d`
+1. 创建依赖的数据库容器，`docker compose -f test/docker-compose.yaml up -d`
 2. 数据库表结构`user-manage/init/postgres/sql`会在项目启动时自动创建，实现**数据库版本变更自管理**
 
 ## 构建

@@ -35,19 +35,7 @@
         },
         "parameters": [
           {
-            "name": "usernamePrefix",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "nickNamePrefix",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "emailPrefix",
+            "name": "nickName",
             "in": "query",
             "required": false,
             "type": "string"
@@ -65,6 +53,12 @@
               "LOCKED"
             ],
             "default": "UNKNOWN_STATUS"
+          },
+          {
+            "name": "selectMask",
+            "in": "query",
+            "required": false,
+            "type": "string"
           },
           {
             "name": "page.pageNo",

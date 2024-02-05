@@ -1,5 +1,5 @@
 ### 创建用户
-POST {{adminBaseUrl}}/v1/users HTTP/1.1
+POST {{adminBaseUrl}}/v1/users
 Content-Type: application/json
 
 {
@@ -12,3 +12,123 @@ Content-Type: application/json
     "email": "777@email"
   }
 }
+
+### 创建用户，用户名重复
+POST {{adminBaseUrl}}/v1/users
+Content-Type: application/json
+
+{
+  "user": {
+    "username": "zhangsan",
+    "nickName": "张三",
+    "password": "123456",
+    "status": 1,
+    "tel": "777",
+    "email": "777@email"
+  }
+}
+
+### 创建用户，不带必填参数字段username，触发参数校验
+POST {{adminBaseUrl}}/v1/users
+Content-Type: application/json
+
+{
+  "user": {
+    "nickName": "张三-1",
+    "password": "123456",
+    "status": 1,
+    "tel": "777",
+    "email": "777@email"
+  }
+}
+
+### 创建用户，枚举值字段status使用非法值，触发参数校验
+POST {{adminBaseUrl}}/v1/users
+Content-Type: application/json
+
+{
+  "user": {
+    "username": "zhangsan",
+    "nickName": "张三-1",
+    "password": "123456",
+    "status": 100,
+    "tel": "777",
+    "email": "777@email"
+  }
+}
+
+### 删除用户
+DELETE {{adminBaseUrl}}/v1/users/695d06d1-b946-467c-a874-d1f3c94fea89
+
+### 删除用户，不存在
+DELETE {{adminBaseUrl}}/v1/users/ae1e6257-e6f9-4c0f-9c2b-23a529476be3
+
+### 查询用户
+GET {{adminBaseUrl}}/v1/users/4022032a-fe06-41c2-bcb3-820170f83568
+
+### 查询用户，不存在
+DELETE {{adminBaseUrl}}/v1/users/ae1e6257-e6f9-4c0f-9c2b-23a529476be3
+
+### 更新用户
+PATCH {{adminBaseUrl}}/v1/users/b6133b82-0070-42c5-aa22-648ae31510ff
+Content-Type: application/json
+
+{
+  "user": {
+    "nickName": "赵六-1",
+    "tel": "13101130333"
+  },
+  "updateMask": "nickName,tel"
+}
+
+### 更新用户，请求参数里有email，updateMask里没有，是不会被更新的
+PATCH {{adminBaseUrl}}/v1/users/b6133b82-0070-42c5-aa22-648ae31510ff
+Content-Type: application/json
+
+{
+  "user": {
+    "nickName": "赵六-1",
+    "email": "yuyy@gmail.com",
+    "tel": "13101130333"
+  },
+  "updateMask": "nickName,tel"
+}
+
+### 更新用户，请求参数里没有tel，updateMask里有，会被更新为零值
+PATCH {{adminBaseUrl}}/v1/users/b6133b82-0070-42c5-aa22-648ae31510ff
+Content-Type: application/json
+
+{
+  "user": {
+    "nickName": "赵六-1"
+  },
+  "updateMask": "nickName,tel"
+}
+
+### 更新用户，不存在
+PATCH {{adminBaseUrl}}/v1/users/074c1310-6d7b-48dd-9f30-280300a83a76
+Content-Type: application/json
+
+{
+  "user": {
+    "nickName": "赵六-1",
+    "tel": "13101130333"
+  },
+  "updateMask": "nickName,tel"
+}
+
+### 分页查询用户，不带必填参数字段，触发参数校验
+GET {{adminBaseUrl}}/v1/users?page.pageNo=1&page.pageSize=3
+
+### 分页查询用户，带条件，根据状态字段筛选
+GET {{adminBaseUrl}}/v1/users?status=3&page.pageNo=1&page.pageSize=3&page.orderBy=update_time desc
+
+### 分页查询用户，按update_time排序
+GET {{adminBaseUrl}}/v1/users?status=3&page.pageNo=1&page.pageSize=3&page.orderBy=update_time desc
+
+### 分页查询用户，带条件，模糊搜索昵称
+GET {{adminBaseUrl}}/v1/users?nickName=孙&status=3&page.pageNo=1&page.pageSize=3&page.orderBy=update_time desc
+
+### 分页查询用户，指定查询结果字段，只返回用户名和昵称
+GET {{adminBaseUrl}}/v1/users?selectMask=username,nickName&status=3&page.pageNo=1&page.pageSize=3&
+    page.orderBy=update_time desc

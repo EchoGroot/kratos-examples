@@ -57,13 +57,58 @@ func (m *ListUsersRequest) validate(all bool) error {
 
 	var errors []error
 
-	// no validation rules for UsernamePrefix
+	// no validation rules for NickName
 
-	// no validation rules for NickNamePrefix
+	if _, ok := _ListUsersRequest_Status_NotInLookup[m.GetStatus()]; ok {
+		err := ListUsersRequestValidationError{
+			field:  "Status",
+			reason: "value must not be in list [UNKNOWN_STATUS]",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
 
-	// no validation rules for EmailPrefix
+	if _, ok := UserStatus_name[int32(m.GetStatus())]; !ok {
+		err := ListUsersRequestValidationError{
+			field:  "Status",
+			reason: "value must be one of the defined enum values",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
 
-	// no validation rules for Status
+	if all {
+		switch v := interface{}(m.GetSelectMask()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, ListUsersRequestValidationError{
+					field:  "SelectMask",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, ListUsersRequestValidationError{
+					field:  "SelectMask",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetSelectMask()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return ListUsersRequestValidationError{
+				field:  "SelectMask",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
 
 	if m.GetPage() == nil {
 		err := ListUsersRequestValidationError{
@@ -182,6 +227,10 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = ListUsersRequestValidationError{}
+
+var _ListUsersRequest_Status_NotInLookup = map[UserStatus]struct{}{
+	0: {},
+}
 
 // Validate checks the field values on CreateUserRequest with the rules defined
 // in the proto definition for this message. If any rules are violated, the
@@ -372,7 +421,27 @@ func (m *User) validate(all bool) error {
 
 	// no validation rules for Password
 
-	// no validation rules for Status
+	if _, ok := _User_Status_NotInLookup[m.GetStatus()]; ok {
+		err := UserValidationError{
+			field:  "Status",
+			reason: "value must not be in list [UNKNOWN_STATUS]",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if _, ok := UserStatus_name[int32(m.GetStatus())]; !ok {
+		err := UserValidationError{
+			field:  "Status",
+			reason: "value must be one of the defined enum values",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
 
 	// no validation rules for Tel
 
@@ -512,6 +581,10 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = UserValidationError{}
+
+var _User_Status_NotInLookup = map[UserStatus]struct{}{
+	0: {},
+}
 
 // Validate checks the field values on ListUsersResponse with the rules defined
 // in the proto definition for this message. If any rules are violated, the
