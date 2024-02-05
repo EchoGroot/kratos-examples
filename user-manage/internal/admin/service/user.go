@@ -13,7 +13,6 @@ import (
 )
 
 type UserService struct {
-	adminv1.UnimplementedUserServiceServer
 	userUC *biz.UserUsecase
 }
 
