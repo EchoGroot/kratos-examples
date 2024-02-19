@@ -1,0 +1,40 @@
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: IMAGE_NAME
+  labels:
+    app: IMAGE_NAME
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: IMAGE_NAME
+  template:
+    metadata:
+      labels:
+        app: IMAGE_NAME
+        prometheus: support
+    spec:
+      containers:
+        - name: IMAGE_NAME
+          image: DOCKER_REGISTRY_ADDR/IMAGE_GROUP/IMAGE_NAME:IMAGE_VERSION
+          imagePullPolicy: IfNotPresent
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "500m"
+            limits:
+              memory: "1024Mi"
+              cpu: "1000m"
+          volumeMounts:
+            - name: IMAGE_NAME
+              mountPath: /app/configs
+          ports:
+            - name: http
+              containerPort: 8000
+            - name: grpc
+              containerPort: 9000
+      volumes:
+        - name: IMAGE_NAME
+          configMap:
+            name: IMAGE_NAME

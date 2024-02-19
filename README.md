@@ -36,14 +36,21 @@ Go微服务框架Kratos（Bilibili开源）最佳实践。封装常用工具，�
     2. 使用BeforeCreate钩子函数，自动生成id
    3. **封装分页查询操作**
    4. 使用可选函数封装数据库连接初始化
-8. logrus日志库
-9. cron定时任务
-10. protobuf定义配置文件
-11. 通过protoc-gen-validate实现**配置文件校验**
-12. wire依赖注入
-13. 常用脚本封装到Makefile
-14. k8s存活探针接口，日志过滤
-15. bytedance的协程池
-16. golangci-lint代码检查
-17. 打包镜像
+8. gitlab ci/cd
+   流水线脚本包含以下功能，详细介绍见[Gitlab CI/CD 实践四：Golang 项目 CI/CD 流水线配置](https://yuyy.info/?p=1946)
+   + 单元测试
+   + 代码检查
+   + 构建镜像
+   + 推送镜像到镜像私仓
+   + 部署应用到k8s
+9. logrus日志库
+10. cron定时任务
+11. protobuf定义配置文件
+12. 通过protoc-gen-validate实现**配置文件校验**
+13. wire依赖注入
+14. 常用脚本封装到Makefile
+15. k8s存活探针接口，日志过滤
+16. bytedance的协程池
+17. golangci-lint代码检查
+18. 打包镜像
 

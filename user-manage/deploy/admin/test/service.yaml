@@ -1,0 +1,17 @@
+kind: Service
+apiVersion: v1
+metadata:
+  labels:
+    app: IMAGE_NAME
+  name: IMAGE_NAME
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 8000
+      targetPort: 8000
+    - name: grpc
+      port: 9000
+      targetPort: 9000
+  selector:
+    app: IMAGE_NAME

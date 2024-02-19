@@ -1,0 +1,78 @@
+include:
+  - project: 'devops/gitlab-cicd-template'
+    ref: main
+    file: '/golang/golangci-lint/1.52.2/.gitlab-ci.yml'
+  - project: 'devops/gitlab-cicd-template'
+    ref: main
+    file: '/golang/unit-test/.gitlab-ci.yml'
+  - project: 'devops/gitlab-cicd-template'
+    ref: main
+    file: '/golang/build-image/.gitlab-ci.yml'
+  - project: 'devops/gitlab-cicd-template'
+    ref: main
+    file: '/common/push-image/.gitlab-ci.yml'
+  - project: 'devops/gitlab-cicd-template'
+    ref: main
+    file: '/common/deploy-to-k8s/.gitlab-ci.yml'
+  - project: 'devops/gitlab-cicd-template'
+    ref: main
+    file: '/common/clean-image/.gitlab-ci.yml'
+
+stages:
+  - test
+  - lint
+  - build
+  - push
+  - deploy
+  - clean
+
+variables: &global-variables
+  MODULE_PREFIX: user-manage
+  IMAGE_GROUP: user-manage
+  ENV: test
+
+build_admin_image:
+  extends:
+    - .golang_build_image_base
+  variables:
+    <<: *global-variables
+    SUB_MODULE: admin
+
+push_admin_image:
+  extends:
+    - .push_image_base
+  variables:
+    <<: *global-variables
+    SUB_MODULE: admin
+  needs: [ build_admin_image ]
+
+deploy_admin_to_test_k8s:
+  extends:
+    - .deploy_to_k8s_base
+  before_script:
+    - K8S_CONFIG=$K8S_CONFIG_192
+    - NAME_SPACE=default
+  variables:
+    <<: *global-variables
+    SUB_MODULE: admin
+  needs: [ push_admin_image ]
+
+deploy_admin_to_prod_k8s:
+  extends:
+    - .deploy_to_k8s_base
+  before_script:
+    - K8S_CONFIG=$K8S_CONFIG_193
+    - NAME_SPACE=default
+  variables:
+    <<: *global-variables
+    SUB_MODULE: admin
+  needs: [ push_admin_image ]
+  only:
+    - tags
+
+clean_admin_image:
+  extends:
+    - .clean_image_base
+  variables:
+    <<: *global-variables
+    SUB_MODULE: admin
