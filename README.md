@@ -19,12 +19,12 @@ Go微服务框架Kratos（Bilibili开源）最佳实践。封装常用工具，�
 1. kratos框架的基本使用，常用功能的封装
    1. 封装配置读取、校验
    2. 日志组件初始化
-   3. 配置链路追踪，将 trace_id 写入响应头里，可用于返回 trace_id 给前端，方便定位日志
+   3. **配置链路追踪**，将 trace_id 写入响应头里，可用于返回 trace_id 给前端，方便定位日志
    4. http返回错误信息处理，隐藏500以上的错误，避免底层错误暴露给调用者
    5. 重新实现kratos的log.Fatal()，log.Fatal()内部调用os.Exit()，会造成defer函数无法执行，改为调用panic
    6. 响应枚举值配置，请求响应枚举值的数字
-   7. 通过protoc-gen-validate实现参数校验
-2. 利用反射，高效处理响应值里的time类型字段，转换为Protocol Buffer的timestamp类型
+   7. 通过protoc-gen-validate实现**参数校验**
+2. **利用反射，高效处理响应值里的time类型字段**，转换为Protocol Buffer的timestamp类型
 3. 基于[Google API规范](https://cloud.google.com/apis/design?hl=zh-cn)定义API接口
 4. **使用FieldMask，解决golang更新零值问题**
 5. **使用FieldMask，解决接口响应字段超出客户端所需，造成带宽浪费，还可避免执行不必要的业务逻辑**
@@ -36,8 +36,8 @@ Go微服务框架Kratos（Bilibili开源）最佳实践。封装常用工具，�
     2. 使用BeforeCreate钩子函数，自动生成id
    3. **封装分页查询操作**
    4. 使用可选函数封装数据库连接初始化
-8. gitlab ci/cd
-   流水线脚本包含以下功能，详细介绍见[Gitlab CI/CD 实践四：Golang 项目 CI/CD 流水线配置](https://yuyy.info/?p=1946)
+8. **gitlab ci/cd 流水线脚本**包含以下功能，
+   详细介绍见[Gitlab CI/CD 实践四：Golang 项目 CI/CD 流水线配置](https://yuyy.info/?p=1946)
    + 单元测试
    + 代码检查
    + 构建镜像

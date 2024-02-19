@@ -29,7 +29,6 @@ stages:
 variables: &global-variables
   MODULE_PREFIX: user-manage
   IMAGE_GROUP: user-manage
-  ENV: test
 
 build_admin_image:
   extends:
@@ -55,6 +54,7 @@ deploy_admin_to_test_k8s:
   variables:
     <<: *global-variables
     SUB_MODULE: admin
+    ENV: test
   needs: [ push_admin_image ]
 
 deploy_admin_to_prod_k8s:
@@ -66,6 +66,7 @@ deploy_admin_to_prod_k8s:
   variables:
     <<: *global-variables
     SUB_MODULE: admin
+    ENV: prod
   needs: [ push_admin_image ]
   only:
     - tags
