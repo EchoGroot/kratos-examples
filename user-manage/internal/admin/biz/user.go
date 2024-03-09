@@ -29,7 +29,6 @@ func (u *UserUsecase) createCheck(ctx context.Context, user *data.User) error {
 	if old != nil {
 		return adminv1.ErrorUserNameRepeat("用户名 %s 重复", user.Username)
 	}
-
 	return nil
 }
 
@@ -72,7 +71,6 @@ func (u *UserUsecase) Update(ctx context.Context, id string, field map[string]in
 	if row == 0 {
 		return nil, adminv1.ErrorUserNotFound("用户 %s 不存在", id)
 	}
-
 	return u.repo.SelectOneByPK(ctx, id)
 }
 

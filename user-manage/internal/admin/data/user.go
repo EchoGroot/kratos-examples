@@ -17,7 +17,7 @@ type User struct {
 	Username string             // 用户名
 	NickName string             // 昵称
 	Password string             // 密码
-	Status   adminv1.UserStatus // 状态
+	Status   adminv1.UserStatus // 状态，直接使用接口定义里的枚举值，增强可读性
 	Tel      string             // 联系电话
 	Email    string             // 邮箱
 }
@@ -48,6 +48,7 @@ func (r *UserRepo) List(ctx context.Context, param *ListUsersParams) ([]*User, i
 		key := "%" + param.NickName + "%"
 		query.Where("nick_name like ?", key)
 	}
+	// 枚举值的零值
 	if param.Status != adminv1.UserStatus_UNKNOWN_STATUS {
 		query.Where("status = ?", param.Status)
 	}
