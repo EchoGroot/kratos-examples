@@ -42,7 +42,7 @@ type ListUsersParams struct {
 	Page     *repo.PageParam
 }
 
-func (r *UserRepo) ListUsers(ctx context.Context, param *ListUsersParams) ([]*User, int32, error) {
+func (r *UserRepo) List(ctx context.Context, param *ListUsersParams) ([]*User, int32, error) {
 	query := r.DB(ctx).Model(&User{})
 	if param.NickName != "" {
 		key := "%" + param.NickName + "%"

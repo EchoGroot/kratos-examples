@@ -30,7 +30,7 @@ func (r *UserService) CreateUser(ctx context.Context, req *adminv1.CreateUserReq
 		return nil, err
 	}
 
-	createdUser, err := r.userUC.CreateUser(ctx, user)
+	createdUser, err := r.userUC.Create(ctx, user)
 	if err != nil {
 		return nil, err
 	}
@@ -41,12 +41,12 @@ func (r *UserService) CreateUser(ctx context.Context, req *adminv1.CreateUserReq
 }
 
 func (r *UserService) DeleteUser(ctx context.Context, req *adminv1.DeleteUserRequest) (*emptypb.Empty, error) {
-	err := r.userUC.DeleteUser(ctx, req.Id)
+	err := r.userUC.Delete(ctx, req.Id)
 	return &emptypb.Empty{}, err
 }
 
 func (r *UserService) GetUser(ctx context.Context, req *adminv1.GetUserRequest) (*adminv1.User, error) {
-	user, err := r.userUC.GetUser(ctx, req.Id)
+	user, err := r.userUC.Get(ctx, req.Id)
 	if err != nil {
 		return nil, err
 	}
@@ -61,7 +61,7 @@ func (r *UserService) UpdateUser(ctx context.Context, req *adminv1.UpdateUserReq
 	if err != nil {
 		return nil, err
 	}
-	user, err := r.userUC.UpdateUser(ctx, req.User.Id, updateField)
+	user, err := r.userUC.Update(ctx, req.User.Id, updateField)
 	if err != nil {
 		return nil, err
 	}
@@ -77,7 +77,7 @@ func (r *UserService) ListUsers(ctx context.Context, req *adminv1.ListUsersReque
 		return nil, err
 	}
 
-	users, totalSize, err := r.userUC.ListUsers(ctx, &params)
+	users, totalSize, err := r.userUC.List(ctx, &params)
 	if err != nil {
 		return nil, err
 	}
