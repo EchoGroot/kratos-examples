@@ -31,26 +31,30 @@ Go微服务框架Kratos（Bilibili开源）最佳实践。封装常用工具，�
 6. 使用[golang-migrate](https://github.com/golang-migrate/migrate)
    ，在服务启动时**维护数据库变更**，自动执行初始化SQL，[详细介绍](https://yuyy.info/?p=2087)
 7. 通过grom操作postgres数据库
-   1. **封装gorm的辅助工具类，提供了基础的CRUD方法，通过泛型实现。**
+   1. [BaseRepo](./pkg/gormx/repo/base_repo.go): **封装gorm的辅助工具类，提供了基础的CRUD方法，通过泛型实现。**
        命名参照[mybatisplus的mapper](https://baomidou.com/pages/49cc81/#mapper-crud-%E6%8E%A5%E5%8F%A3)
     2. 使用BeforeCreate钩子函数，自动生成id
    3. **封装分页查询操作**
    4. 使用可选函数封装数据库连接初始化
-8. **gitlab ci/cd 流水线脚本**包含以下功能，
+8. [CacheRepo](./pkg/cache/cache_repo.go): **封装 cache 操作，使用 redis 作为缓存**
+   1. 参考 go-zero https://go-zero.dev/cn/docs/blog/cache/redis-cache
+   2. 采用 Cache Aside 缓存模式
+   3. **使用延迟双删来减小缓存不一致的窗口**
+9. **gitlab ci/cd 流水线脚本**包含以下功能，
    详细介绍见[Gitlab CI/CD 实践四：Golang 项目 CI/CD 流水线配置](https://yuyy.info/?p=1946)
    + 单元测试
    + 代码检查
    + 构建镜像
    + 推送镜像到镜像私仓
    + 部署应用到k8s
-9. logrus日志库
-10. cron定时任务
-11. protobuf定义配置文件
-12. 通过protoc-gen-validate实现**配置文件校验**
-13. wire依赖注入
-14. 常用脚本封装到Makefile
-15. k8s存活探针接口，日志过滤
-16. bytedance的协程池
-17. golangci-lint代码检查
-18. 打包镜像
+10. logrus日志库
+11. cron定时任务
+12. protobuf定义配置文件
+13. 通过protoc-gen-validate实现**配置文件校验**
+14. wire依赖注入
+15. 常用脚本封装到Makefile
+16. k8s存活探针接口，日志过滤
+17. bytedance的协程池
+18. golangci-lint代码检查
+19. 打包镜像
 
